@@ -16,17 +16,7 @@ public class WidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        /*for(int appWidgetId : appWidgetIds){
-            Intent intent = new Intent(context, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-
-            RemoteViews views  = new RemoteViews(context.getPackageName(), R.layout.widget);
-            views.setOnClickPendingIntent(R.id.btn1, pendingIntent);
-            //final ComponentName provider = new ComponentName(context, this.getClass());
-
-            appWidgetManager.updateAppWidget(appWidgetId, views);
-        }*/
-
+        Log.e("###","onUpdate executed");
         for (int appWidgetId : appWidgetIds) {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
             Calendar cal = Calendar.getInstance();
@@ -47,9 +37,11 @@ public class WidgetProvider extends AppWidgetProvider {
             Calendar current = Calendar.getInstance();
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
             remoteViews.setTextViewText(R.id.time_widget_date_textview, current.get(Calendar.HOUR_OF_DAY)+":"+current.get(Calendar.MINUTE));
+
+            Log.e("###","onReceived executed time: "+ current.get(Calendar.HOUR_OF_DAY)+":"+current.get(Calendar.MINUTE));
+
             AppWidgetManager manager = AppWidgetManager.getInstance(context);
             manager.updateAppWidget(new ComponentName(context, WidgetProvider.class),remoteViews);
-            Log.e("###","abcd");
         }else {
             super.onReceive(context, intent);
         }
@@ -63,6 +55,7 @@ public class WidgetProvider extends AppWidgetProvider {
 
         AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 60000, pendingIntent);
+        Log.e("###","onEnabled executed");
     }
 
     @Override
@@ -72,5 +65,6 @@ public class WidgetProvider extends AppWidgetProvider {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
         alarmManager.cancel(pendingIntent);
         pendingIntent.cancel();
+        Log.e("###","onDisabled executed");
     }
 }

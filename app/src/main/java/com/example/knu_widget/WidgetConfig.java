@@ -17,7 +17,7 @@ public class WidgetConfig extends AppCompatActivity {
 
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
-    private CheckBox check_weather, check_luck;
+    private CheckBox check_weather, check_luck, check_news;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +41,7 @@ public class WidgetConfig extends AppCompatActivity {
 
         check_weather = findViewById(R.id.check_weather);
         check_luck = findViewById(R.id.check_luck);
+        check_news = findViewById(R.id.check_news);
     }
 
     public void confirmConfiguration(View v) {
@@ -55,6 +56,8 @@ public class WidgetConfig extends AppCompatActivity {
             views.setViewVisibility(R.id.linear_weather, View.INVISIBLE);
         if(!check_luck.isChecked())
             views.setViewVisibility(R.id.linear_luck, View.INVISIBLE);
+        if(!check_news.isChecked())
+            views.setViewVisibility(R.id.linear_news, View.INVISIBLE);
 
         appWidgetManager.updateAppWidget(appWidgetId, views);
 
