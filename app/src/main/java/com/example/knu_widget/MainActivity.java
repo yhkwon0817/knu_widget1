@@ -59,9 +59,6 @@ public class MainActivity extends AppCompatActivity {
     double longitude,latitude;
     String currDate;
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
