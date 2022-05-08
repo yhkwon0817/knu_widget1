@@ -2,6 +2,7 @@ package com.example.knu_widget;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,7 +28,7 @@ public class GetData extends AppCompatActivity {
     EditText name,st_time,end_time;
     ArrayAdapter<String> arrayAdapter,dayAdapter;
     String selected_info1;
-    Button btn1,btn2;
+    Button btn1,btn2,btn3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +39,7 @@ public class GetData extends AppCompatActivity {
         spinner2 = (Spinner)findViewById(R.id.spinner2);
         btn1 = (Button)findViewById(R.id.btn1);
         btn2 = (Button)findViewById(R.id.btn2);
+        btn3 = (Button)findViewById(R.id.btn3);
         name = (EditText) findViewById(R.id.name);
         st_time = (EditText) findViewById(R.id.st_time);
         end_time = (EditText)findViewById(R.id.end_time);
@@ -105,7 +107,13 @@ public class GetData extends AppCompatActivity {
             }
         });
 
-
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 }
