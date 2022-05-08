@@ -65,7 +65,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.text1);
         btn = findViewById(R.id.btn);
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        String locationProvider = LocationManager.NETWORK_PROVIDER;
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 //위치계산
                 if ( Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission( getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) { ActivityCompat.requestPermissions( MainActivity.this, new String[] { android.Manifest.permission.ACCESS_FINE_LOCATION }, 0 ); }
                 else {
-                    Location loc_Current = locationManager.getLastKnownLocation(GPS_PROVIDER);
+                    Location loc_Current = locationManager.getLastKnownLocation(locationProvider);
                     String provider = loc_Current.getProvider();
                     longitude = loc_Current.getLongitude();
                     latitude = loc_Current.getAltitude();
@@ -161,13 +162,6 @@ public class MainActivity extends AppCompatActivity {
 
                  xpp.next();
                  int eventType = xpp.getEventType();
-
-
-
-
-
-
-
             } catch (IOException | XmlPullParserException e) {
                 e.printStackTrace();
             }
