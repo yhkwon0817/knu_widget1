@@ -76,6 +76,8 @@ public class WidgetProvider extends AppWidgetProvider {
             new getCoronaNumber(remoteViews, appWidgets[0], manager).execute(Corona_url);
             String News_url = "https://news.naver.com/main/ranking/popularDay.naver";
             new getNewsHeadLine(remoteViews, appWidgets[0], manager).execute(News_url);
+            String Fortune_url = intent.getStringExtra("Fortune_url");
+            new getFotune(remoteViews, appWidgets[0], manager).execute(Fortune_url);
 
             AppWidgetManager.getInstance(context).updateAppWidget(new ComponentName(context, WidgetProvider.class), remoteViews);
         }else {
