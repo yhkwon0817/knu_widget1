@@ -10,13 +10,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class getFotune extends AsyncTask<String,String,String> {
+public class getFortune extends AsyncTask<String,String,String> {
 
     private RemoteViews views;
     private int widgetId;
     private AppWidgetManager appWidgetManager;
 
-    public getFotune(RemoteViews views, int appWidgetId, AppWidgetManager appWidgetManager){
+    public getFortune(RemoteViews views, int appWidgetId, AppWidgetManager appWidgetManager){
         this.views=views;
         this.widgetId=appWidgetId;
         this.appWidgetManager=appWidgetManager;
@@ -44,5 +44,14 @@ public class getFotune extends AsyncTask<String,String,String> {
         }
 
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+        if(isCancelled()){
+            s=null;
+        }
+        views.setTextViewText(R.id.text_luck, s);
+        appWidgetManager.updateAppWidget(widgetId, views);
     }
 }

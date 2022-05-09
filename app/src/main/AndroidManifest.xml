@@ -27,7 +27,7 @@
 
         <activity
             android:name=".WidgetConfig"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
             </intent-filter>
@@ -47,7 +47,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="false">
 
         </activity>
     </application>
