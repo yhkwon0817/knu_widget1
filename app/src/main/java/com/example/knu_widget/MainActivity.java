@@ -47,13 +47,6 @@ public class MainActivity extends AppCompatActivity {
     String[] reDirectFortune_url = new String[12];
     String Fortune_url = "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&qvt=0&query=%EB%9D%A0%EB%B3%84%20%EC%9A%B4%EC%84%B8";
 
-    String News_url = "https://news.naver.com/main/ranking/popularDay.naver";
-    String URL = "https://m.search.naver.com/search.naver?sm=mtp_hty.top&where=m&query=%EC%84%9C%EC%9A%B8+%EB%82%A0%EC%94%A8";
-    ArrayList<String> News_headlines = new ArrayList<>();
-
-    String Corona_url ="https://search.naver.com/search.naver?where=nexearch&sm=top_sug.pre&fbm=1&acr=1&acq=%EC%8B%A0%EA%B7%9C%ED%99%95%EC%A7%84%EC%9E%90&qdt=0&ie=utf8&query=%EC%BD%94%EB%A1%9C%EB%82%98+%EC%8B%A0%EA%B7%9C+%ED%99%95%EC%A7%84%EC%9E%90";
-    String Corona_num = "";
-
     String Weather_url ="https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
     String weather_url ="";
     double longitude,latitude;
@@ -104,32 +97,6 @@ public class MainActivity extends AppCompatActivity {
                     reDirectFortune_url[num] = ele.absUrl("href");
                     num++;
                 }
-
-                //헤드라인 제목 긁어오기
-                Document news_Doc = Jsoup.connect(News_url).get();
-                Elements news_elements = news_Doc.getElementsByAttributeValue("class","rankingnews_list");
-                num = 0;
-                for(Element ele : news_elements){
-                    Elements aElements = ele.select("a");
-                    String article_url = aElements.attr("href");
-
-                    Document subDoc = Jsoup.connect(article_url).get();
-                    Elements sub_ele = subDoc.getElementsByAttributeValue("class","media_end_head_title");
-                    News_headlines.add(sub_ele.text());
-                    if(num++ == 3) break;
-                }
-                Log.e("###",News_headlines.toString());
-
-                //코로나 확진자 수 긁어오기
-                Document corona_Doc = Jsoup.connect(Corona_url).get();
-                Elements ele = corona_Doc.getElementsByAttributeValue("class","info_num");
-                for(Element e : ele){
-                    Corona_num = e.text();
-                    break;
-                }
-
-
-                Log.e("###","코로나 확진자수는?  "+Corona_num);
 
                 String serviceKey = "e4l%2BmnqXJB8BUNJaCVmUAhrTGT8Fh%2FidDa7uScih%2FDUr1IaDRmdOGBQtGM2zThwStYcT7RUnMrDJwwZsd1QeEg%3D%3D";
                 String nx = String.format("%.0f",latitude);
