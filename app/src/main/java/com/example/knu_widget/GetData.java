@@ -2,7 +2,9 @@ package com.example.knu_widget;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.appwidget.AppWidgetManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +36,11 @@ public class GetData extends AppCompatActivity {
     ArrayAdapter<String> arrayAdapter,dayAdapter;
     String selected_info1;
     Button btn1,btn2,btn3;
+
+    public static final String SHARED_PREFS = "prefs";
+    public static final String KEY_ANIMAL = "keyAnimal";
+    private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,11 +135,19 @@ public class GetData extends AppCompatActivity {
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),WidgetProvider.class);
-                intent.putExtra("Fortune_url",reDirectFortune_url[arrayList.indexOf(selected_info1)]);
+                SharedPreferences prefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString(KEY_ANIMAL, reDirectFortune_url[arrayList.indexOf(selected_info1)]);
+                editor.apply();
+
+                Intent resultValue = new Intent();
+                resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                setResult(RESULT_OK, resultValue);
+
                 Log.e("###",reDirectFortune_url[arrayList.indexOf(selected_info1)]);
                 Intent intent1 = new Intent(getApplicationContext(),MainActivity.class);
                 startActivity(intent1);
+                finish();
             }
         });
 

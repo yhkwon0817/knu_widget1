@@ -31,16 +31,19 @@ public class getFortune extends AsyncTask<String,String,String> {
     protected String doInBackground(String... params) {
         String url = params[0];
         try{
+            Log.e("###", "Crawling Starts...");
             Document fortune_Doc = Jsoup.connect(url).get();
-            Elements ele = fortune_Doc.getElementsByAttributeValue("class","text_cs_fortune_text");
+            Elements ele = fortune_Doc.getElementsByAttributeValue("class","text _cs_fortune_text");
             String todayFortune = "";
             for(Element e : ele){
                 todayFortune = e.text();
                 break;
             }
+            Log.e("###", "Crawling Value - "+todayFortune);
             return todayFortune;
         }catch (Exception e){
             Log.e("###","getting Today Fortune failed"+e.getMessage());
+            Log.e("###","" + url);
         }
 
         return null;

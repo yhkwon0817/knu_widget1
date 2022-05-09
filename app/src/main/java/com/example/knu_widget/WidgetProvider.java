@@ -1,5 +1,9 @@
 package com.example.knu_widget;
 
+import static com.example.knu_widget.GetData.KEY_ANIMAL;
+import static com.example.knu_widget.GetData.SHARED_PREFS;
+import static com.example.knu_widget.WidgetConfig.KEY_BUTTON_TEXT;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -7,6 +11,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -76,8 +81,9 @@ public class WidgetProvider extends AppWidgetProvider {
             new getCoronaNumber(remoteViews, appWidgets[0], manager).execute(Corona_url);
             String News_url = "https://news.naver.com/main/ranking/popularDay.naver";
             new getNewsHeadLine(remoteViews, appWidgets[0], manager).execute(News_url);
-            String Fortune_url = intent.getStringExtra("Fortune_url");
-            new getFotune(remoteViews, appWidgets[0], manager).execute(Fortune_url);
+            SharedPreferences prefs = context.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+            String Fortune_url = prefs.getString(KEY_ANIMAL , "Press me");
+            new getFortune(remoteViews, appWidgets[0], manager).execute(Fortune_url);
 
             AppWidgetManager.getInstance(context).updateAppWidget(new ComponentName(context, WidgetProvider.class), remoteViews);
         }else {
@@ -100,7 +106,7 @@ public class WidgetProvider extends AppWidgetProvider {
         }
 
         AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 60000, pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 6000, pendingIntent);
         Log.e("###","onEnabled executed");
     }
 
