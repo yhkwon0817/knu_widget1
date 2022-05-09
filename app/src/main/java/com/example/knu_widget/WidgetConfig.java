@@ -55,10 +55,6 @@ public class WidgetConfig extends AppCompatActivity {
     public void confirmConfiguration(View v) {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
 
-        Intent intent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-
-
         RemoteViews views = new RemoteViews(this.getPackageName(), R.layout.widget);
         if(!check_weather.isChecked())
             views.setViewVisibility(R.id.linear_weather, View.GONE);

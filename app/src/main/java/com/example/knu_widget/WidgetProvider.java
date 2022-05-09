@@ -7,6 +7,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -49,7 +50,6 @@ public class WidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        super.onReceive(context, intent);
         if(intent.getStringExtra("mode")!=null){
             Calendar current = Calendar.getInstance();
             AppWidgetManager manager = AppWidgetManager.getInstance(context);
@@ -87,7 +87,15 @@ public class WidgetProvider extends AppWidgetProvider {
     public void onEnabled(Context context) {
         Intent intent = new Intent(context, WidgetProvider.class);
         intent.putExtra("mode", "time");
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        PendingIntent pendingIntent;
+        if( Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            pendingIntent=PendingIntent.getBroadcast(context, 0, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
+        }
+        else{
+            pendingIntent=PendingIntent.getBroadcast(context, 0, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+        }
 
         AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 60000, pendingIntent);
@@ -98,7 +106,16 @@ public class WidgetProvider extends AppWidgetProvider {
     public void onDisabled(Context context) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, WidgetProvider.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        PendingIntent pendingIntent;
+        if( Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            pendingIntent=PendingIntent.getBroadcast(context, 0, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
+        }
+        else{
+            pendingIntent=PendingIntent.getBroadcast(context, 0, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+
         alarmManager.cancel(pendingIntent);
         pendingIntent.cancel();
         Log.e("###","onDisabled executed");
