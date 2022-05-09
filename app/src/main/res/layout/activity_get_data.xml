@@ -125,7 +125,7 @@
     <ListView
         android:id="@+id/listivew"
         android:layout_width="wrap_content"
-        android:layout_height="500sp"
+        android:layout_height="450sp"
         />
     <Button
         android:id="@+id/btn3"

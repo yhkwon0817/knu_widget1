@@ -15,8 +15,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.jsoup.select.Evaluator;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -43,6 +48,19 @@ public class GetData extends AppCompatActivity {
         name = (EditText) findViewById(R.id.name);
         st_time = (EditText) findViewById(R.id.st_time);
         end_time = (EditText)findViewById(R.id.end_time);
+        String[] reDirectFortune_url = {"https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&qvt=0&query=%EC%A5%90%EB%9D%A0%20%EC%9A%B4%EC%84%B8",
+                "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&qvt=0&query=%EC%86%8C%EB%9D%A0%20%EC%9A%B4%EC%84%B8",
+                "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&qvt=0&query=%ED%98%B8%EB%9E%91%EC%9D%B4%EB%9D%A0%20%EC%9A%B4%EC%84%B8",
+                "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&qvt=0&query=%ED%86%A0%EB%81%BC%EB%9D%A0%20%EC%9A%B4%EC%84%B8",
+                "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&qvt=0&query=%EC%9A%A9%EB%9D%A0%20%EC%9A%B4%EC%84%B8",
+                "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&qvt=0&query=%EB%B1%80%EB%9D%A0%20%EC%9A%B4%EC%84%B8",
+                "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&qvt=0&query=%EB%A7%90%EB%9D%A0%20%EC%9A%B4%EC%84%B8",
+                "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&qvt=0&query=%EC%96%91%EB%9D%A0%20%EC%9A%B4%EC%84%B8",
+                "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&qvt=0&query=%EC%9B%90%EC%88%AD%EC%9D%B4%EB%9D%A0%20%EC%9A%B4%EC%84%B8",
+                "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&qvt=0&query=%EB%8B%AD%EB%9D%A0%20%EC%9A%B4%EC%84%B8",
+                "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&qvt=0&query=%EA%B0%9C%EB%9D%A0%20%EC%9A%B4%EC%84%B8",
+                "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&qvt=0&query=%EB%8F%BC%EC%A7%80%EB%9D%A0%20%EC%9A%B4%EC%84%B8"};
+
         ListView listView = (ListView) findViewById(R.id.listivew);
         MyAdapter myAdapter = new MyAdapter(this,classInfo);
         ArrayList arrayList = new ArrayList<>();
@@ -79,7 +97,7 @@ public class GetData extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selected_info1 = spinner1.getSelectedItem().toString();
-                Log.e("###",selected_info1);
+                Log.e("###", String.valueOf(arrayList.indexOf(selected_info1)));
             }
 
             @Override
@@ -110,8 +128,11 @@ public class GetData extends AppCompatActivity {
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(),WidgetProvider.class);
+                intent.putExtra("Fortune_url",reDirectFortune_url[arrayList.indexOf(selected_info1)]);
+                Log.e("###",reDirectFortune_url[arrayList.indexOf(selected_info1)]);
+                Intent intent1 = new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent1);
             }
         });
 
