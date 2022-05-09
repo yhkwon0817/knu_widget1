@@ -40,7 +40,7 @@ public class getCoronaNumber extends AsyncTask<String, String, String> {
             }
             return Corona_num;
         }catch (Exception e){
-            Log.e("###","getting Corona number failed"+e.getMessage());
+            Log.e("###","getting Corona number failed "+url+e.getMessage());
         }
         return null;
     }

@@ -21,7 +21,7 @@ public class WidgetConfig extends AppCompatActivity {
 
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 
-    private CheckBox check_weather, check_luck, check_news;
+    private CheckBox check_weather, check_corona, check_luck, check_news;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +47,7 @@ public class WidgetConfig extends AppCompatActivity {
         }
 
         check_weather = findViewById(R.id.check_weather);
+        check_corona = findViewById(R.id.check_corona);
         check_luck = findViewById(R.id.check_luck);
         check_news = findViewById(R.id.check_news);
     }
@@ -60,11 +61,13 @@ public class WidgetConfig extends AppCompatActivity {
 
         RemoteViews views = new RemoteViews(this.getPackageName(), R.layout.widget);
         if(!check_weather.isChecked())
-            views.setViewVisibility(R.id.linear_weather, View.INVISIBLE);
+            views.setViewVisibility(R.id.linear_weather, View.GONE);
+        if(!check_corona.isChecked())
+            views.setViewVisibility(R.id.linear_corona, View.GONE);
         if(!check_luck.isChecked())
-            views.setViewVisibility(R.id.linear_luck, View.INVISIBLE);
+            views.setViewVisibility(R.id.linear_luck, View.GONE);
         if(!check_news.isChecked())
-            views.setViewVisibility(R.id.linear_news, View.INVISIBLE);
+            views.setViewVisibility(R.id.linear_news, View.GONE);
 
         appWidgetManager.updateAppWidget(appWidgetId, views);
 

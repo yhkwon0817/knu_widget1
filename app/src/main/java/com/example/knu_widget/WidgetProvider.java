@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,16 +21,22 @@ public class WidgetProvider extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId){
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget);
-        String currDate;
+
 
         Calendar cal = Calendar.getInstance();
         views.setTextViewText(R.id.time_widget_date_textview, cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE));
 
+        String currDateMonth, currDateDay;
         Date currTime = Calendar.getInstance().getTime();
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
-        currDate = format.format(currTime);
+        SimpleDateFormat formatMonth = new SimpleDateFormat("MM", Locale.getDefault());
+        SimpleDateFormat formatDay = new SimpleDateFormat("dd", Locale.getDefault());
+        currDateMonth = formatMonth.format(currTime);
+        currDateDay = formatDay.format(currTime);
+        views.setTextViewText(R.id.text_month, currDateMonth);
+        views.setTextViewText(R.id.text_day, currDateDay);
 
         appWidgetManager.updateAppWidget(appWidgetId, views);
+        Log.e("###","upDateAppWidget executed");
     }
 
     @Override
@@ -54,7 +61,18 @@ public class WidgetProvider extends AppWidgetProvider {
             remoteViews.setTextViewText(R.id.time_widget_date_textview, current.get(Calendar.HOUR_OF_DAY)+":"+current.get(Calendar.MINUTE));
             Log.e("###","onReceived executed time: "+ current.get(Calendar.HOUR_OF_DAY)+":"+current.get(Calendar.MINUTE));
 
-            String Corona_url ="https://search.naver.com/search.naver?where=nexearch&sm=top_sug.pre&fbm=1&acr=1&acq=%EC%8B%A0%EA%B7%9C%ED%99%95%EC%A7%84%EC%9E%90&qdt=0&ie=utf8&query=%EC%BD%94%EB%A1%9C%EB%82%98+%EC%8B%A0%EA%B7%9C+%ED%99%95%EC%A7%84%EC%9E%90";
+
+            String currDateMonth, currDateDay;
+            Date currTime = Calendar.getInstance().getTime();
+            SimpleDateFormat formatMonth = new SimpleDateFormat("MM", Locale.getDefault());
+            SimpleDateFormat formatDay = new SimpleDateFormat("dd", Locale.getDefault());
+            currDateMonth = formatMonth.format(currTime);
+            currDateDay = formatDay.format(currTime);
+            remoteViews.setTextViewText(R.id.text_month, currDateMonth);
+            remoteViews.setTextViewText(R.id.text_day, currDateDay);
+
+
+            String Corona_url ="https://search.naver.com/search.naver?where=nexearch&sm=tab_jum&query=%EC%BD%94%EB%A1%9C%EB%82%98+%EC%8B%A0%EA%B7%9C+%ED%99%95%EC%A7%84%EC%9E%90";
             new getCoronaNumber(remoteViews, appWidgets[0], manager).execute(Corona_url);
             String News_url = "https://news.naver.com/main/ranking/popularDay.naver";
             new getNewsHeadLine(remoteViews, appWidgets[0], manager).execute(News_url);

@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
                 int num = 0;
                 for(Element ele : Fortune_ele ){
                     reDirectFortune_url[num] = ele.absUrl("href");
+
                     num++;
                 }
 

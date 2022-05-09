@@ -48,7 +48,7 @@ public class getNewsHeadLine extends AsyncTask<String, String, String> {
                 return News_headlines.toString();
             }
         }catch (Exception e){
-            Log.e("###","getting Corona number failed"+e.getMessage());
+            Log.e("###","getting NewsHeadLine failed"+e.getMessage());
         }
         return null;
     }
