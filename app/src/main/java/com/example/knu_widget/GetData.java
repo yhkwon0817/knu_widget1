@@ -14,28 +14,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-import org.jsoup.select.Evaluator;
-
-import java.io.IOException;
 import java.util.ArrayList;
-
 
 
 public class GetData extends AppCompatActivity {
 
-    private Spinner spinner1,spinner2;
+    private Spinner spinner1, spinner2;
     ArrayList<ClassTimeData> classInfo;
-    EditText name,st_time,end_time;
-    ArrayAdapter<String> arrayAdapter,dayAdapter;
+    EditText name, st_time, end_time;
+    ArrayAdapter<String> arrayAdapter, dayAdapter;
     String selected_info1;
-    Button btn1,btn2,btn3;
+    Button add, delete, next;
 
     public static final String SHARED_PREFS = "prefs";
     public static final String KEY_ANIMAL = "keyAnimal";
@@ -47,14 +38,14 @@ public class GetData extends AppCompatActivity {
         setContentView(R.layout.activity_get_data);
 
         classInfo = new ArrayList<ClassTimeData>();
-        spinner1 = (Spinner)findViewById(R.id.spinner1);
-        spinner2 = (Spinner)findViewById(R.id.spinner2);
-        btn1 = (Button)findViewById(R.id.btn1);
-        btn2 = (Button)findViewById(R.id.btn2);
-        btn3 = (Button)findViewById(R.id.btn3);
-        name = (EditText) findViewById(R.id.name);
-        st_time = (EditText) findViewById(R.id.st_time);
-        end_time = (EditText)findViewById(R.id.end_time);
+        spinner1 = findViewById(R.id.spinner1);
+        spinner2 = findViewById(R.id.spinner2);
+        add = findViewById(R.id.btn_add_schedule);
+        delete = findViewById(R.id.btn_delete_schedule);
+        next = findViewById(R.id.btn_next_page);
+        name = findViewById(R.id.name);
+        st_time = findViewById(R.id.st_time);
+        end_time = findViewById(R.id.end_time);
         String[] reDirectFortune_url = {"https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&qvt=0&query=%EC%A5%90%EB%9D%A0%20%EC%9A%B4%EC%84%B8",
                 "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&qvt=0&query=%EC%86%8C%EB%9D%A0%20%EC%9A%B4%EC%84%B8",
                 "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&qvt=0&query=%ED%98%B8%EB%9E%91%EC%9D%B4%EB%9D%A0%20%EC%9A%B4%EC%84%B8",
@@ -69,7 +60,7 @@ public class GetData extends AppCompatActivity {
                 "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&qvt=0&query=%EB%8F%BC%EC%A7%80%EB%9D%A0%20%EC%9A%B4%EC%84%B8"};
 
         ListView listView = (ListView) findViewById(R.id.listivew);
-        MyAdapter myAdapter = new MyAdapter(this,classInfo);
+        MyAdapter myAdapter = new MyAdapter(this, classInfo);
         ArrayList arrayList = new ArrayList<>();
         ArrayList day = new ArrayList<>();
         arrayList.add("쥐띠");
@@ -92,12 +83,12 @@ public class GetData extends AppCompatActivity {
 
         arrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, arrayList);
 
-        spinner1 = (Spinner)findViewById(R.id.spinner1);
+        spinner1 = (Spinner) findViewById(R.id.spinner1);
         spinner1.setAdapter(arrayAdapter);
 
         dayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, day);
 
-        spinner2 = (Spinner)findViewById(R.id.spinner2);
+        spinner2 = (Spinner) findViewById(R.id.spinner2);
         spinner2.setAdapter(dayAdapter);
 
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -109,30 +100,30 @@ public class GetData extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                Toast.makeText(getApplicationContext(),"띠를 골라 주십시오",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "띠를 골라 주십시오", Toast.LENGTH_SHORT).show();
             }
         });
 
 
         listView.setAdapter(myAdapter);
 
-        btn1.setOnClickListener(new View.OnClickListener() {
+        add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                classInfo.add(new ClassTimeData(spinner2.getSelectedItem().toString(),name.getText().toString(),st_time.getText().toString(),end_time.getText().toString()));
+                classInfo.add(new ClassTimeData(spinner2.getSelectedItem().toString(), name.getText().toString(), st_time.getText().toString(), end_time.getText().toString()));
                 listView.setAdapter(myAdapter);
             }
         });
 
-        btn2.setOnClickListener(new View.OnClickListener() {
+        delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                classInfo.remove(classInfo.size()-1);
+                classInfo.remove(classInfo.size() - 1);
                 listView.setAdapter(myAdapter);
             }
         });
 
-        btn3.setOnClickListener(new View.OnClickListener() {
+        next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SharedPreferences prefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
@@ -144,10 +135,9 @@ public class GetData extends AppCompatActivity {
                 resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
                 setResult(RESULT_OK, resultValue);
 
-                Log.e("###",reDirectFortune_url[arrayList.indexOf(selected_info1)]);
-                Intent intent1 = new Intent(getApplicationContext(),MainActivity.class);
+                Log.e("###", reDirectFortune_url[arrayList.indexOf(selected_info1)]);
+                Intent intent1 = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent1);
-                finish();
             }
         });
 

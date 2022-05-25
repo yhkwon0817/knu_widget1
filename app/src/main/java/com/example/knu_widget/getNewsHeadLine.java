@@ -18,10 +18,10 @@ public class getNewsHeadLine extends AsyncTask<String, String, String> {
     private int widgetId;
     private AppWidgetManager appWidgetManager;
 
-    public getNewsHeadLine(RemoteViews views, int appWidgetId, AppWidgetManager appWidgetManager){
-        this.views=views;
-        this.widgetId=appWidgetId;
-        this.appWidgetManager=appWidgetManager;
+    public getNewsHeadLine(RemoteViews views, int appWidgetId, AppWidgetManager appWidgetManager) {
+        this.views = views;
+        this.widgetId = appWidgetId;
+        this.appWidgetManager = appWidgetManager;
     }
 
     @Override
@@ -32,31 +32,31 @@ public class getNewsHeadLine extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... params) {
         String url = params[0];
-        try{
+        try {
             Document news_Doc = Jsoup.connect(url).get();
-            Elements news_elements = news_Doc.getElementsByAttributeValue("class","rankingnews_list");
+            Elements news_elements = news_Doc.getElementsByAttributeValue("class", "rankingnews_list");
             int num = 0;
             ArrayList<String> News_headlines = new ArrayList<>();
-            for(Element ele : news_elements){
+            for (Element ele : news_elements) {
                 Elements aElements = ele.select("a");
                 String article_url = aElements.attr("href");
 
                 Document subDoc = Jsoup.connect(article_url).get();
-                Elements sub_ele = subDoc.getElementsByAttributeValue("class","media_end_head_title");
+                Elements sub_ele = subDoc.getElementsByAttributeValue("class", "media_end_head_title");
                 News_headlines.add(sub_ele.text());
-                if(num++ == 3) break;
+                if (num++ == 3) break;
                 return News_headlines.toString();
             }
-        }catch (Exception e){
-            Log.e("###","getting NewsHeadLine failed"+e.getMessage());
+        } catch (Exception e) {
+            Log.e("###", "getting NewsHeadLine failed" + e.getMessage());
         }
         return null;
     }
 
     @Override
     protected void onPostExecute(String s) {
-        if(isCancelled()){
-            s=null;
+        if (isCancelled()) {
+            s = null;
         }
         views.setTextViewText(R.id.text_news, s);
         appWidgetManager.updateAppWidget(widgetId, views);

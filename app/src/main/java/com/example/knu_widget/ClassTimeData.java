@@ -4,13 +4,13 @@ public class ClassTimeData {
     public String day, classname, startTime, endTime;
 
 
-    public ClassTimeData(String day,String classname,String startTime,String endTime)
-    {
+    public ClassTimeData(String day, String classname, String startTime, String endTime) {
         this.day = day;
         this.classname = classname;
         this.startTime = startTime;
         this.endTime = endTime;
     }
+
     public String getDay() {
         return day;
     }

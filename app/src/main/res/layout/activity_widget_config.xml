@@ -16,12 +16,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="날씨"/>
+            android:text="날씨" />
 
         <CheckBox
+            android:id="@+id/check_weather"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/check_weather"/>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
@@ -33,12 +33,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="확진자 수"/>
+            android:text="확진자 수" />
 
         <CheckBox
+            android:id="@+id/check_corona"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/check_corona"/>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
@@ -50,12 +50,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="오늘의 운세"/>
+            android:text="오늘의 운세" />
 
         <CheckBox
+            android:id="@+id/check_luck"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/check_luck"/>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
@@ -67,12 +67,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="오늘의 뉴스"/>
+            android:text="오늘의 뉴스" />
 
         <CheckBox
+            android:id="@+id/check_news"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/check_news"/>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

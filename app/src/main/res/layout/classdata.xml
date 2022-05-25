@@ -8,24 +8,23 @@
         android:id="@+id/ClassDay"
         android:layout_width="100sp"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        />
+        android:textColor="@color/black" />
+
     <TextView
         android:id="@+id/ClassName"
         android:layout_width="100sp"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        />
+        android:textColor="@color/black" />
+
     <TextView
         android:id="@+id/ClassStartTime"
         android:layout_width="100sp"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        />
+        android:textColor="@color/black" />
+
     <TextView
         android:id="@+id/ClassEndTime"
         android:layout_width="100sp"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        />
+        android:textColor="@color/black" />
 </LinearLayout>

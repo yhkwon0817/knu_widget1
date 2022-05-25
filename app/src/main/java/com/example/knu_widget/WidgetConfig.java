@@ -29,7 +29,9 @@ public class WidgetConfig extends AppCompatActivity {
         setContentView(R.layout.activity_widget_config);
 
         //위치 허가 받기
-        if ( Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission( getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) { ActivityCompat.requestPermissions( WidgetConfig.this, new String[] { android.Manifest.permission.ACCESS_FINE_LOCATION }, 0 ); }
+        if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(WidgetConfig.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+        }
 
         Intent configIntent = getIntent();
         Bundle extras = configIntent.getExtras();
@@ -56,13 +58,13 @@ public class WidgetConfig extends AppCompatActivity {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
 
         RemoteViews views = new RemoteViews(this.getPackageName(), R.layout.widget);
-        if(!check_weather.isChecked())
+        if (!check_weather.isChecked())
             views.setViewVisibility(R.id.linear_weather, View.GONE);
-        if(!check_corona.isChecked())
+        if (!check_corona.isChecked())
             views.setViewVisibility(R.id.linear_corona, View.GONE);
-        if(!check_luck.isChecked())
+        if (!check_luck.isChecked())
             views.setViewVisibility(R.id.linear_luck, View.GONE);
-        if(!check_news.isChecked())
+        if (!check_news.isChecked())
             views.setViewVisibility(R.id.linear_news, View.GONE);
 
         appWidgetManager.updateAppWidget(appWidgetId, views);

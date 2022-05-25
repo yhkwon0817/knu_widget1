@@ -15,8 +15,7 @@ public class MyAdapter extends BaseAdapter {
     LayoutInflater mLayoutInflater = null;
     ArrayList<ClassTimeData> sample;
 
-    public MyAdapter(Context context,ArrayList<ClassTimeData> data)
-    {
+    public MyAdapter(Context context, ArrayList<ClassTimeData> data) {
         mContext = context;
         sample = data;
         mLayoutInflater = LayoutInflater.from(mContext);
@@ -39,7 +38,7 @@ public class MyAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View coverView, ViewGroup parent) {
-        View view = mLayoutInflater.inflate(R.layout.classdata,null);
+        View view = mLayoutInflater.inflate(R.layout.classdata, null);
 
         TextView classDay = (TextView) view.findViewById(R.id.ClassDay);
         TextView className = (TextView) view.findViewById(R.id.ClassName);
