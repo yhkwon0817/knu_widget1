@@ -8,9 +8,10 @@
     android:gravity="center"
     tools:context=".LogInActivity">
 
-    <com.kakao.usermgmt.LoginButton
+    <ImageView
+        android:id="@+id/login"
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:background="@null"/>
+        android:src="@drawable/ic_kakao"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

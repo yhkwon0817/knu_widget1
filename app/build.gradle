@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
 }
 
 android {
@@ -15,7 +17,9 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
+    buildFeatures{
+        viewBinding true
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -25,6 +29,9 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
     }
 }
 
@@ -45,4 +52,8 @@ dependencies {
 
 
     implementation platform('com.google.firebase:firebase-bom:30.0.2')
+
+
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.5.30'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.21'
 }

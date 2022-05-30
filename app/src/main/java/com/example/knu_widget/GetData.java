@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.appwidget.AppWidgetManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -26,6 +27,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
+import com.kakao.sdk.user.UserApiClient;
+import com.kakao.sdk.user.model.Account;
+import com.kakao.sdk.user.model.Profile;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.kakao.usermgmt.callback.MeV2ResponseCallback;
@@ -62,14 +66,15 @@ public class GetData extends AppCompatActivity {
     String str_day, str_name, str_start, str_end;
 
     public static final String SHARED_PREFS = "prefs";
+    private SharedPreferences preferences;
     public static final String KEY_ANIMAL = "keyAnimal";
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-    private SessionCallBack mSessionCallback = new SessionCallBack();
     private FirebaseFirestore mstore = FirebaseFirestore.getInstance();
-    private String curDate;
-    private String Uid = null;
 
+
+    private String curDate;
     private Schedule newSchedule;
+    private String Uid = null;
     private RecyclerView mPostRecyclerView;
     private List<Schedule> mDatas;
 
@@ -113,24 +118,35 @@ public class GetData extends AppCompatActivity {
         day.add("목요일");
         day.add("금요일");
 
-        //로그인 되어있지 않으면 로그인 액티비티로
-        if(!Session.getCurrentSession().isOpened()){
-            Intent intent = new Intent(GetData.this, LogInActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        else{
-            UserManagement.getInstance().me(new MeV2ResponseCallback() {
-                @Override
-                public void onSessionClosed(ErrorResult errorResult) {
-                }
+        preferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
+        Uid = preferences.getString("userid", null);
 
-                @Override
-                public void onSuccess(MeV2Response result) {
-                    Uid = String.valueOf(result.getId());
+        if (Uid == null) {
+            Log.e("###", "Uid null");
+            UserApiClient.getInstance().loginWithKakaoAccount(GetData.this, (oAuthToken, throwable) -> {
+                if (throwable != null) {
+                    Log.e("###", "로그인 실패 : " + throwable);
+                } else {
+                    requestMe();
                 }
+                return null;
             });
         }
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UserApiClient.getInstance().unlink(throwable -> {
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("userid", null);
+                    editor.apply();
+                    Intent intent = new Intent(GetData.this, LogInActivity.class);
+                    startActivity(intent);
+                    finish();
+                    return null;
+                });
+            }
+        });
 
         arrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, arrayList);
         spinner1 = (Spinner) findViewById(R.id.spinner1);
@@ -153,8 +169,6 @@ public class GetData extends AppCompatActivity {
         });
 
         listView.setAdapter(myAdapter);
-        updateData();
-
 
         newSchedule = new Schedule();
         add.setOnClickListener(new View.OnClickListener() {
@@ -192,8 +206,8 @@ public class GetData extends AppCompatActivity {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SharedPreferences prefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-                SharedPreferences.Editor editor = prefs.edit();
+                preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
                 editor.putString(KEY_ANIMAL, reDirectFortune_url[arrayList.indexOf(selected_info1)]);
                 editor.apply();
 
@@ -207,37 +221,19 @@ public class GetData extends AppCompatActivity {
             }
         });
 
-        //카카오톡 로그아웃
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (Session.getCurrentSession().checkAndImplicitOpen()) {
-                    UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {
-                        @Override
-                        public void onSessionClosed(ErrorResult errorResult) {
-                            super.onSessionClosed(errorResult);
-                            Log.e("###", "onSessionClosed: " + errorResult.getErrorMessage());
-
-                        }
-
-                        @Override
-                        public void onCompleteLogout() {
-                            if (mSessionCallback != null) {
-                                Log.e("###", "onCompleteLogout:logout ");
-                                Session.getCurrentSession().removeCallback(mSessionCallback);
-                                Intent intent = new Intent(GetData.this, LogInActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }
-
-                        }
-                    });
-                }
-            }
-        });
     }
 
-    public void updateData(){
-
+    private void requestMe() {
+        UserApiClient.getInstance().me(((user, throwable) -> {
+            if(throwable!=null){
+                Log.e("###", "사용자 정보 요청 실패"+throwable);
+            }else{
+                String Uid = String.valueOf(user.getId());
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("userid", Uid);
+                editor.apply();
+            }
+            return null;
+        }));
     }
 }
