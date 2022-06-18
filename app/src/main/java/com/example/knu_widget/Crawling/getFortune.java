@@ -1,22 +1,24 @@
-package com.example.knu_widget;
+package com.example.knu_widget.Crawling;
 
 import android.appwidget.AppWidgetManager;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.example.knu_widget.R;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class getCoronaNumber extends AsyncTask<String, String, String> {
+public class getFortune extends AsyncTask<String, String, String> {
 
     private RemoteViews views;
     private int widgetId;
     private AppWidgetManager appWidgetManager;
 
-    public getCoronaNumber(RemoteViews views, int appWidgetId, AppWidgetManager appWidgetManager) {
+    public getFortune(RemoteViews views, int appWidgetId, AppWidgetManager appWidgetManager) {
         this.views = views;
         this.widgetId = appWidgetId;
         this.appWidgetManager = appWidgetManager;
@@ -31,17 +33,21 @@ public class getCoronaNumber extends AsyncTask<String, String, String> {
     protected String doInBackground(String... params) {
         String url = params[0];
         try {
-            Document corona_Doc = Jsoup.connect(url).get();
-            Elements ele = corona_Doc.getElementsByAttributeValue("class", "info_num");
-            String Corona_num = "";
+            Log.e("###", "Crawling Starts...");
+            Document fortune_Doc = Jsoup.connect(url).get();
+            Elements ele = fortune_Doc.getElementsByAttributeValue("class", "text _cs_fortune_text");
+            String todayFortune = "";
             for (Element e : ele) {
-                Corona_num = e.text();
+                todayFortune = e.text();
                 break;
             }
-            return Corona_num;
+            Log.e("###", "Crawling Value - " + todayFortune);
+            return todayFortune;
         } catch (Exception e) {
-            Log.e("###", "getting Corona number failed " + url + e.getMessage());
+            Log.e("###", "getting Today Fortune failed" + e.getMessage());
+            Log.e("###", "" + url);
         }
+
         return null;
     }
 
@@ -50,7 +56,7 @@ public class getCoronaNumber extends AsyncTask<String, String, String> {
         if (isCancelled()) {
             s = null;
         }
-        views.setTextViewText(R.id.text_corona, s);
+        views.setTextViewText(R.id.text_luck, s);
         appWidgetManager.updateAppWidget(widgetId, views);
     }
 }

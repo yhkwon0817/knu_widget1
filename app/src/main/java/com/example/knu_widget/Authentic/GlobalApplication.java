@@ -1,19 +1,8 @@
-package com.example.knu_widget;
+package com.example.knu_widget.Authentic;
 
 import android.app.Application;
-import android.content.Context;
 
-import androidx.annotation.Nullable;
-
-import com.kakao.auth.ApprovalType;
-import com.kakao.auth.AuthType;
-import com.kakao.auth.IApplicationConfig;
-import com.kakao.auth.ISessionConfig;
-import com.kakao.auth.KakaoAdapter;
-import com.kakao.auth.KakaoSDK;
 import com.kakao.sdk.common.KakaoSdk;
-
-import java.security.Key;
 
 public class GlobalApplication extends Application {
     private static GlobalApplication instance;

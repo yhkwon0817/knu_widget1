@@ -1,4 +1,4 @@
-package com.example.knu_widget;
+package com.example.knu_widget.Authentic;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,22 +10,14 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.example.knu_widget.GetData;
+import com.example.knu_widget.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.kakao.auth.Session;
-import com.kakao.network.ErrorResult;
 import com.kakao.sdk.user.UserApiClient;
-import com.kakao.sdk.user.model.Account;
-import com.kakao.sdk.user.model.Profile;
-import com.kakao.usermgmt.UserManagement;
-import com.kakao.usermgmt.callback.MeV2ResponseCallback;
-import com.kakao.usermgmt.response.MeV2Response;
-import com.kakao.util.exception.KakaoException;
 
 public class LogInActivity extends AppCompatActivity {
     private long clickTime = 0;

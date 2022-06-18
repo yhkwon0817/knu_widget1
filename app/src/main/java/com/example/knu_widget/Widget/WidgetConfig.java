@@ -1,10 +1,9 @@
-package com.example.knu_widget;
+package com.example.knu_widget.Widget;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +13,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.RemoteViews;
+
+import com.example.knu_widget.R;
 
 public class WidgetConfig extends AppCompatActivity {
     public static final String SHARED_PREFS = "prefs";

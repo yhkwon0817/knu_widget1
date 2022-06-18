@@ -6,8 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.example.knu_widget.GetData;
-import com.example.knu_widget.R;
+import com.example.knu_widget.Authentic.LogInActivity;
 
 public class loading extends AppCompatActivity {
 

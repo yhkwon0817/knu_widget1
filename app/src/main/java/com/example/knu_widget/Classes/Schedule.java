@@ -1,4 +1,4 @@
-package com.example.knu_widget;
+package com.example.knu_widget.Classes;
 
 import java.io.Serializable;
 

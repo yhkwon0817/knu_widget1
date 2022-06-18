@@ -1,4 +1,4 @@
-package com.example.knu_widget;
+package com.example.knu_widget.Authentic;
 
 import android.util.Log;
 

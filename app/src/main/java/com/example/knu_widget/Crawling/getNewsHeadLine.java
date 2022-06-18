@@ -1,9 +1,11 @@
-package com.example.knu_widget;
+package com.example.knu_widget.Crawling;
 
 import android.appwidget.AppWidgetManager;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.RemoteViews;
+
+import com.example.knu_widget.R;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

@@ -1,4 +1,4 @@
-package com.example.knu_widget;
+package com.example.knu_widget.Widget;
 
 import static com.example.knu_widget.GetData.KEY_ANIMAL;
 import static com.example.knu_widget.GetData.SHARED_PREFS;
@@ -15,7 +15,11 @@ import android.os.Build;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import java.lang.reflect.Type;
+import com.example.knu_widget.R;
+import com.example.knu_widget.Crawling.getCoronaNumber;
+import com.example.knu_widget.Crawling.getFortune;
+import com.example.knu_widget.Crawling.getNewsHeadLine;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
