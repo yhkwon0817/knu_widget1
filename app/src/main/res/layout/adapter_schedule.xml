@@ -45,13 +45,6 @@
             android:gravity="center"
             android:id="@+id/post_end"
             android:hint="종료시간"/>
-
-        <ImageView
-            android:id="@+id/post_btn_delete"
-            android:layout_width="27dp"
-            android:layout_height="27dp"
-            android:src="@drawable/ic_trash"
-            android:clickable="true"/>
     </LinearLayout>
 
 </LinearLayout>

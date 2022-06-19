@@ -8,18 +8,30 @@ public class Schedule implements Serializable {
     private String lecture;
     private String start;
     private String end;
+    private String writeId;
 
-    public Schedule(){
-        this.day="";
-        this.lecture="";
-        this.start="";
-        this.end="";
+    public Schedule() {
+        this.day = "";
+        this.lecture = "";
+        this.start = "";
+        this.end = "";
+        this.writeId = "";
     }
-    public Schedule(String day, String lecture, String start, String end){
-        this.day=day;
-        this.lecture=lecture;
-        this.start=start;
-        this.end=end;
+
+    public Schedule(String day, String lecture, String start, String end, String writeId) {
+        this.day = day;
+        this.lecture = lecture;
+        this.start = start;
+        this.end = end;
+        this.writeId = writeId;
+    }
+
+    public String getWriteId() {
+        return writeId;
+    }
+
+    public void setWriteId(String writeId) {
+        this.writeId = writeId;
     }
 
     public String getDay() {

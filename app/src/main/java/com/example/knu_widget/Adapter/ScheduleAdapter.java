@@ -21,6 +21,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyView
 
     private Context mContext;
     private List<Schedule> mSchedules;
+    public OnItemClickListener mListener = null;
 
     public ScheduleAdapter(Context context, List<Schedule> schedules) {
         this.mContext = context;
@@ -30,9 +31,9 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyView
     @NonNull
     @Override
     public ScheduleAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService (Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate (R.layout.adapter_schedule, parent, false);
-        MyViewHolder vh = new MyViewHolder (view);
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.adapter_schedule, parent, false);
+        MyViewHolder vh = new MyViewHolder(view);
         return vh;
     }
 
@@ -51,7 +52,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyView
         return mSchedules.size();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView day, lecture, start, end;
         ImageView delete;
 
@@ -62,11 +63,30 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyView
             lecture = itemView.findViewById(R.id.post_lecture);
             start = itemView.findViewById(R.id.post_start);
             end = itemView.findViewById(R.id.post_end);
-            delete = itemView.findViewById(R.id.post_btn_delete);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition();
+                    if (pos != RecyclerView.NO_POSITION) {
+                        if(mListener!= null){
+                            mListener.OnItemClick(v, pos);
+                        }
+                    }
+                }
+            });
         }
     }
 
-    public void setmSchedules(List<Schedule> mSchedules){
+    public interface OnItemClickListener {
+        void OnItemClick(View v, int position);
+    }
+
+    public void setOnClickListener(OnItemClickListener listener) {
+        this.mListener = listener;
+    }
+
+    public void setmSchedules(List<Schedule> mSchedules) {
         this.mSchedules = mSchedules;
     }
 }

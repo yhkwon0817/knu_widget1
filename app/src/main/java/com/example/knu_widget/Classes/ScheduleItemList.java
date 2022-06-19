@@ -29,8 +29,19 @@ public class ScheduleItemList {
     public void sort(){
         int _size = scheduleList.size();
 
-        for(int i=0;i<_size;i++){
-            Log.e("###", i+": sorting");
+        for(int i=0;i<_size-1;i++){
+            for(int j=i+1;j<_size;j++){
+                if(dayInteger(scheduleList.get(i).getDay())>dayInteger(scheduleList.get(j).getDay())){
+                    swap(i, j);
+                }else if(dayInteger(scheduleList.get(i).getDay())==dayInteger(scheduleList.get(j).getDay())){
+                    int comp = compareTime(scheduleList.get(i).getStart(), scheduleList.get(j).getStart());
+                    if(comp==1){
+                        swap(i, j);
+                    }else if(comp==0&&compareTime(scheduleList.get(i).getEnd(), scheduleList.get(j).getEnd())==1){
+                        swap(i, j);
+                    }
+                }
+            }
         }
     }
 
