@@ -1,8 +1,11 @@
 package com.example.knu_widget;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.TimePickerDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,19 +13,24 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.knu_widget.Adapter.MyAdapter;
+import com.example.knu_widget.Adapter.ScheduleAdapter;
 import com.example.knu_widget.Authentic.LogInActivity;
-import com.example.knu_widget.Classes.ClassTimeData;
 import com.example.knu_widget.Classes.Schedule;
+import com.example.knu_widget.Classes.ScheduleItemList;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.kakao.sdk.user.UserApiClient;
 
 import java.util.ArrayList;
@@ -44,81 +52,69 @@ public class GetData extends AppCompatActivity {
             "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&qvt=0&query=%EB%8F%BC%EC%A7%80%EB%9D%A0%20%EC%9A%B4%EC%84%B8"};
 
     private Spinner spinner1, spinner2;
-    ArrayList<ClassTimeData> classInfo;
-    EditText name, st_time, end_time;
-    ArrayAdapter<String> arrayAdapter, dayAdapter;
-    String selected_info1;
-    Button add, delete, next, logout;
-    String str_day, str_name, str_start, str_end;
+    private String day, animal, curDate, Uid = null;
+    EditText name;
+    TextView st_time, end_time;
+    Button add, next, logout;
+    ImageView start, end;
+    private int st_hour = 0, st_minute = 0, end_hour = 0, end_minute = 0;
 
     public static final String SHARED_PREFS = "prefs";
     private SharedPreferences preferences;
     public static final String KEY_ANIMAL = "keyAnimal";
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     private FirebaseFirestore mstore = FirebaseFirestore.getInstance();
-
-
-    private String curDate;
     private Schedule newSchedule;
-    private String Uid = null;
-    private RecyclerView mPostRecyclerView;
-    private List<Schedule> mDatas;
 
+    RecyclerView recyclerView;
+    List<Schedule> schedules;
+    ScheduleAdapter scheduleAdapter;
+    ScheduleItemList scheduleItemList = ScheduleItemList.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_get_data);
 
-        classInfo = new ArrayList<ClassTimeData>();
-        spinner1 = findViewById(R.id.spinner1);
-        spinner2 = findViewById(R.id.spinner2);
-        add = findViewById(R.id.btn_add_schedule);
-        delete = findViewById(R.id.btn_delete_schedule);
-        next = findViewById(R.id.btn_next_page);
-        logout = findViewById(R.id.btn_logout);
         name = findViewById(R.id.name);
         st_time = findViewById(R.id.st_time);
         end_time = findViewById(R.id.end_time);
+        start = findViewById(R.id.btn_start);
+        end = findViewById(R.id.btn_end);
 
+        spinner1 = findViewById(R.id.spinner1);
+        spinner2 = findViewById(R.id.spinner2);
 
-        ListView listView = (ListView) findViewById(R.id.listivew);
-        MyAdapter myAdapter = new MyAdapter(this, classInfo);
-        ArrayList arrayList = new ArrayList<>();
-        ArrayList day = new ArrayList<>();
-        arrayList.add("쥐띠");
-        arrayList.add("소띠");
-        arrayList.add("호랑이띠");
-        arrayList.add("토끼띠");
-        arrayList.add("용띠");
-        arrayList.add("뱀띠");
-        arrayList.add("말띠");
-        arrayList.add("양띠");
-        arrayList.add("원숭이띠");
-        arrayList.add("닭띠");
-        arrayList.add("개띠");
-        arrayList.add("돼지띠");
-        day.add("월요일");
-        day.add("화요일");
-        day.add("수요일");
-        day.add("목요일");
-        day.add("금요일");
+        add = findViewById(R.id.btn_add_schedule);
+        next = findViewById(R.id.btn_next_page);
+        logout = findViewById(R.id.btn_logout);
 
+        recyclerView = findViewById(R.id.schedule_list_recycle);
         preferences = getSharedPreferences("UserInfo", MODE_PRIVATE);
         Uid = preferences.getString("userid", null);
+        logInCheck();
+        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                animal = adapterView.getItemAtPosition(i).toString();
+            }
 
-        if (Uid == null) {
-            Log.e("###", "Uid null");
-            UserApiClient.getInstance().loginWithKakaoAccount(GetData.this, (oAuthToken, throwable) -> {
-                if (throwable != null) {
-                    Log.e("###", "로그인 실패 : " + throwable);
-                } else {
-                    requestMe();
-                }
-                return null;
-            });
-        }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
+        });//띠 스피너
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                day = adapterView.getItemAtPosition(i).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });//요일 스피너
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,88 +128,139 @@ public class GetData extends AppCompatActivity {
                     return null;
                 });
             }
+        });//카카오 로그아웃
+
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerDialog timePickerDialog =
+                        new TimePickerDialog(GetData.this, android.R.style.Theme_Holo_Light_Dialog,
+                                new TimePickerDialog.OnTimeSetListener() {
+                                    @Override
+                                    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                                        if(minute<10){
+                                            st_time.setText(hour+" : 0"+minute);
+                                        }else{
+                                            st_time.setText(hour+" : "+minute);
+                                        }
+                                    }
+                                }, st_hour, st_minute, false);
+                timePickerDialog.show();
+            }
+        });
+        end.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerDialog timePickerDialog =
+                        new TimePickerDialog(GetData.this, android.R.style.Theme_Holo_Light_Dialog,
+                                new TimePickerDialog.OnTimeSetListener() {
+                                    @Override
+                                    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                                        if(minute<10){
+                                            end_time.setText(hour+" : 0"+minute);
+                                        }else{
+                                            end_time.setText(hour+" : "+minute);
+                                        }
+                                    }
+                                }, end_hour, end_minute, false);
+                timePickerDialog.show();
+            }
         });
 
-        arrayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, arrayList);
-        spinner1 = (Spinner) findViewById(R.id.spinner1);
-        spinner1.setAdapter(arrayAdapter);
-        dayAdapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, day);
-        spinner2 = (Spinner) findViewById(R.id.spinner2);
-        spinner2.setAdapter(dayAdapter);
+        //recyclerView.setHasFixedSize(true);
+        EventChangeListener();
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        scheduleAdapter = new ScheduleAdapter(GetData.this, schedules);
 
-        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                selected_info1 = spinner1.getSelectedItem().toString();
-                //Log.e("###", String.valueOf(arrayList.indexOf(selected_info1)));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                Toast.makeText(getApplicationContext(), "띠를 골라 주십시오", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        listView.setAdapter(myAdapter);
-
+        recyclerView.setAdapter(scheduleAdapter);
+        Log.e("###", "순서 확인");
         newSchedule = new Schedule();
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                classInfo.add(new ClassTimeData(spinner2.getSelectedItem().toString(), name.getText().toString(), st_time.getText().toString(), end_time.getText().toString()));
-                listView.setAdapter(myAdapter);
-
                 curDate = String.valueOf(System.currentTimeMillis());
                 newSchedule.setDay(spinner2.getSelectedItem().toString());
                 newSchedule.setLecture(name.getText().toString());
                 newSchedule.setStart(st_time.getText().toString());
                 newSchedule.setEnd(end_time.getText().toString());
 
+                if (newSchedule.getDay().equals("") || newSchedule.getLecture().equals("") || newSchedule.getStart().equals("") || newSchedule.getEnd().equals("")) {
+                    Toast.makeText(getApplicationContext(), "필수 정보를 입력해주세요", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 mstore.collection(Uid).document(curDate)
                         .set(newSchedule)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
                                 Log.e("###", "업로드 성공");
+                                EventChangeListener();
                             }
                         });
 
             }
-        });
-
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                classInfo.remove(classInfo.size() - 1);
-                listView.setAdapter(myAdapter);
-            }
-        });
+        });//시간표 추가하기
 
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
-                editor.putString(KEY_ANIMAL, reDirectFortune_url[arrayList.indexOf(selected_info1)]);
+                editor.putString(KEY_ANIMAL, animal);
                 editor.apply();
 
                 Intent resultValue = new Intent();
                 resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
                 setResult(RESULT_OK, resultValue);
 
-                Log.e("###", reDirectFortune_url[arrayList.indexOf(selected_info1)]);
+                Log.e("###", animal);
                 Intent intent1 = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent1);
             }
         });
+    }
 
+    private void EventChangeListener() {
+        schedules = new ArrayList<>();
+        mstore.collection(Uid).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task!=null){
+                    schedules.clear();
+                    Log.e("###", "쿼리 갯수: "+task.getResult().getDocuments().size());
+                    for (DocumentSnapshot snap : task.getResult().getDocuments()){
+                        schedules.add(snap.toObject(Schedule.class));
+                    }
+                    scheduleItemList.setScheduleList(schedules);
+                    scheduleItemList.sort();
+                    scheduleAdapter.setmSchedules(scheduleItemList.getScheduleList());
+                    scheduleAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+    private void logInCheck() {
+        if (Uid == null) {
+            Log.e("###", "Uid null");
+            UserApiClient.getInstance().loginWithKakaoAccount(GetData.this, (oAuthToken, throwable) -> {
+                if (throwable != null) {
+                    Log.e("###", "로그인 실패 : " + throwable);
+                } else {
+                    requestMe();
+                }
+                return null;
+            });
+        } else {
+            Log.e("###", Uid);
+        }
     }
 
     private void requestMe() {
         UserApiClient.getInstance().me(((user, throwable) -> {
-            if(throwable!=null){
-                Log.e("###", "사용자 정보 요청 실패"+throwable);
-            }else{
+            if (throwable != null) {
+                Log.e("###", "사용자 정보 요청 실패" + throwable);
+            } else {
                 String Uid = String.valueOf(user.getId());
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("userid", Uid);

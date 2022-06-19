@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="filter_animal">
+        <item>쥐띠</item>
+        <item>소띠</item>
+        <item>호랑이띠</item>
+        <item>토끼띠</item>
+        <item>용띠</item>
+        <item>뱀띠</item>
+        <item>말띠</item>
+        <item>양띠</item>
+        <item>원숭이띠</item>
+        <item>닭띠</item>
+        <item>개띠</item>
+        <item>돼지띠</item>
+    </string-array>
+</resources>

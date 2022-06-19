@@ -45,6 +45,10 @@ public class LogInActivity extends AppCompatActivity {
                 }
                 return null;
             });
+        }else{
+            Intent intent =new Intent(LogInActivity.this, GetData.class);
+            startActivity(intent);
+            finish();
         }
 
         login.setOnClickListener(new View.OnClickListener() {
