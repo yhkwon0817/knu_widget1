@@ -3,20 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
+    android:background="@color/back"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/linear_weather"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/back"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
+            android:fontFamily="@font/basicfont"
             android:layout_height="wrap_content"
+            android:background="@color/back"
             android:text="날씨" />
+
+        <TextView
+            android:id="@+id/text_weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/basicfont"/>
+
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -26,27 +36,32 @@
             <TextView
                 android:id="@+id/text_month"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/basicfont" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="월" />
+                android:text="월"
+                android:fontFamily="@font/basicfont"/>
 
             <TextView
                 android:id="@+id/text_day"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/basicfont"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="일" />
+                android:text="일"
+                android:fontFamily="@font/basicfont"/>
 
             <TextView
                 android:id="@+id/time_widget_date_textview"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/basicfont"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -62,38 +77,43 @@
         android:id="@+id/linear_corona"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/back"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:fontFamily="@font/basicfont">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="확진자 수" />
+            android:text="확진자 수"
+            android:fontFamily="@font/basicfont"/>
 
         <TextView
             android:id="@+id/text_corona"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/basicfont"/>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linear_luck"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/back"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="운" />
+            android:text="운세"
+            android:fontFamily="@font/basicfont"/>
 
         <TextView
             android:id="@+id/text_luck"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/basicfont"/>
 
     </LinearLayout>
 
@@ -101,19 +121,21 @@
         android:id="@+id/linear_news"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@color/back"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="오늘의 뉴스" />
+            android:text="오늘의 뉴스"
+            android:fontFamily="@font/basicfont"/>
 
         <TextView
             android:id="@+id/text_news"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/basicfont"/>
 
     </LinearLayout>
 

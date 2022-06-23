@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     Button btn;
     String[] reDirectFortune_url = new String[12];
     String Fortune_url = "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&qvt=0&query=%EB%9D%A0%EB%B3%84%20%EC%9A%B4%EC%84%B8";
-
     String Weather_url = "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst";
     String weather_url = "";
     double longitude, latitude;

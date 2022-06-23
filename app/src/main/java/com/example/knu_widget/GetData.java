@@ -53,7 +53,8 @@ public class GetData extends AppCompatActivity implements ScheduleAdapter.OnItem
             "https://search.naver.com/search.naver?where=nexearch&sm=tab_etc&qvt=0&query=%EB%8F%BC%EC%A7%80%EB%9D%A0%20%EC%9A%B4%EC%84%B8"};
 
     private Spinner spinner1, spinner2;
-    private String day, animal, curDate, Uid = null;
+    private String day, curDate, Uid = null;
+    private int animal;
     EditText name;
     TextView st_time, end_time;
     Button add, next, logout;
@@ -149,14 +150,12 @@ public class GetData extends AppCompatActivity implements ScheduleAdapter.OnItem
             public void onClick(View view) {
                 preferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
-                editor.putString(KEY_ANIMAL, animal);
+                editor.putString(KEY_ANIMAL, reDirectFortune_url[animal]);
                 editor.apply();
 
                 Intent resultValue = new Intent();
                 resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
                 setResult(RESULT_OK, resultValue);
-
-                Log.e("###", animal);
                 Intent intent1 = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent1);
             }
@@ -232,7 +231,7 @@ public class GetData extends AppCompatActivity implements ScheduleAdapter.OnItem
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                animal = adapterView.getItemAtPosition(i).toString();
+                animal = i;
             }
 
             @Override

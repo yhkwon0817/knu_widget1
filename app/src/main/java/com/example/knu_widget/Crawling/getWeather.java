@@ -1,7 +1,10 @@
 package com.example.knu_widget.Crawling;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.appwidget.AppWidgetManager;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -12,13 +15,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class getFortune extends AsyncTask<String, String, String> {
+public class getWeather extends AsyncTask<String, String, String> {
 
     private RemoteViews views;
     private int widgetId;
     private AppWidgetManager appWidgetManager;
 
-    public getFortune(RemoteViews views, int appWidgetId, AppWidgetManager appWidgetManager) {
+    public getWeather(RemoteViews views, int appWidgetId, AppWidgetManager appWidgetManager) {
         this.views = views;
         this.widgetId = appWidgetId;
         this.appWidgetManager = appWidgetManager;
@@ -33,21 +36,19 @@ public class getFortune extends AsyncTask<String, String, String> {
     protected String doInBackground(String... params) {
         String url = params[0];
         try {
-            Log.e("###", "Crawling Starts..."+url);
-            Document fortune_Doc = Jsoup.connect(url).get();
-            Elements ele = fortune_Doc.getElementsByAttributeValue("class", "text _cs_fortune_text");
-            String todayFortune = "";
+            Document weather_Doc = Jsoup.connect(url).get();
+            Log.e("###", "날씨 시작");
+            Elements ele = weather_Doc.getElementsByAttributeValue("class","current");
+            String current_temp = "";
             for (Element e : ele) {
-                todayFortune = e.text();
+                current_temp = e.text();
                 break;
             }
-            Log.e("###", "Crawling Value - " + todayFortune);
-            return todayFortune;
+            Log.e("###", "날씨 성공" + current_temp);
+            return current_temp;
         } catch (Exception e) {
-            Log.e("###", "getting Today Fortune failed" + e.getMessage());
-            Log.e("###", "" + url);
+            Log.e("###", "getting Corona number failed " + url + e.getMessage());
         }
-
         return null;
     }
 
@@ -56,7 +57,7 @@ public class getFortune extends AsyncTask<String, String, String> {
         if (isCancelled()) {
             s = null;
         }
-        views.setTextViewText(R.id.text_luck, s);
+        views.setTextViewText(R.id.text_weather, s);
         appWidgetManager.updateAppWidget(widgetId, views);
     }
 }

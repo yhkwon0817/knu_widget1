@@ -5,7 +5,8 @@
     android:minHeight="40dp"
     android:minResizeWidth="40dp"
     android:minWidth="110dp"
-    android:resizeMode="vertical"
+    android:resizeMode="vertical||horizontal"
+    android:previewImage="@drawable/logo"
     android:updatePeriodMillis="3600000"
     android:widgetCategory="home_screen">
 </appwidget-provider>

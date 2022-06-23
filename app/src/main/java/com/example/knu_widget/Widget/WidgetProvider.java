@@ -1,5 +1,6 @@
 package com.example.knu_widget.Widget;
 
+import static android.content.Context.MODE_PRIVATE;
 import static com.example.knu_widget.GetData.KEY_ANIMAL;
 import static com.example.knu_widget.GetData.SHARED_PREFS;
 
@@ -15,6 +16,7 @@ import android.os.Build;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.example.knu_widget.Crawling.getWeather;
 import com.example.knu_widget.R;
 import com.example.knu_widget.Crawling.getCoronaNumber;
 import com.example.knu_widget.Crawling.getFortune;
@@ -85,9 +87,13 @@ public class WidgetProvider extends AppWidgetProvider {
             new getNewsHeadLine(remoteViews, appWidgets[0], manager).execute(News_url);
 
             //오늘의 행운
-            SharedPreferences prefs = context.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+            SharedPreferences prefs = context.getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
             String Fortune_url = prefs.getString(KEY_ANIMAL , "Press me");
             new getFortune(remoteViews, appWidgets[0], manager).execute(Fortune_url);
+
+            //오늘의 날씨
+            String Weather_url = "https://weather.naver.com/";
+            new getWeather(remoteViews, appWidgets[0], manager).execute(Weather_url);
 
             AppWidgetManager.getInstance(context).updateAppWidget(new ComponentName(context, WidgetProvider.class), remoteViews);
         }else {
