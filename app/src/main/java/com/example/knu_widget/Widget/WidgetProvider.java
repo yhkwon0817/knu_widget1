@@ -35,7 +35,6 @@ public class WidgetProvider extends AppWidgetProvider {
         //날씨 부분
         //날씨 넣기 전에 월 일을 입력해 놓았다.
         Calendar cal = Calendar.getInstance();
-        views.setTextViewText(R.id.time_widget_date_textview, cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE));
         String currDateMonth, currDateDay;
         Date currTime = Calendar.getInstance().getTime();
         SimpleDateFormat formatMonth = new SimpleDateFormat("MM", Locale.getDefault());
@@ -68,7 +67,6 @@ public class WidgetProvider extends AppWidgetProvider {
 
             //날씨
             Calendar current = Calendar.getInstance();
-            remoteViews.setTextViewText(R.id.time_widget_date_textview, current.get(Calendar.HOUR_OF_DAY)+":"+current.get(Calendar.MINUTE));
             String currDateMonth, currDateDay;
             Date currTime = Calendar.getInstance().getTime();
             SimpleDateFormat formatMonth = new SimpleDateFormat("MM", Locale.getDefault());
